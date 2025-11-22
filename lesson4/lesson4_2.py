@@ -15,7 +15,6 @@ def main():
         print(page.title())
 
         sleep(20)
-
         browser.close()
 
         print("建立資源")
