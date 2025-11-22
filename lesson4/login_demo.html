@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入頁面 - 元素定位示範</title>
+    <style>
+        /* 通用選擇器：重置所有元素的預設樣式 */
+        * {
+            margin: 0;              /* 移除預設外邊距 */
+            padding: 0;             /* 移除預設內邊距 */
+            box-sizing: border-box; /* 讓寬高計算包含 padding 和 border */
+        }
+        
+        /* 頁面主體樣式 */
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif; /* 設定字體 */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* 漸層背景：從紫藍到紫色 */
+            min-height: 100vh;      /* 最小高度為視窗高度 */
+            display: flex;          /* 使用 Flexbox 佈局 */
+            justify-content: center; /* 水平置中 */
+            align-items: center;    /* 垂直置中 */
+            padding: 20px;          /* 內邊距 */
+        }
+        
+        /* 登入容器樣式 */
+        .login-container {
+            background: white;      /* 白色背景 */
+            padding: 40px;          /* 內邊距 */
+            border-radius: 10px;    /* 圓角 */
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); /* 陰影效果 */
+            width: 100%;            /* 寬度 100% */
+            max-width: 400px;       /* 最大寬度限制 */
+        }
+        
+        /* 標題樣式 */
+        h1 {
+            text-align: center;     /* 文字置中 */
+            color: #333;            /* 深灰色文字 */
+            margin-bottom: 30px;    /* 下方外邊距 */
+            font-size: 28px;        /* 字體大小 */
+        }
+        
+        /* 表單群組樣式 */
+        .form-group {
+            margin-bottom: 20px;    /* 每個表單群組之間的間距 */
+        }
+        
+        /* 標籤樣式 */
+        label {
+            display: block;         /* 區塊顯示（獨佔一行） */
+            margin-bottom: 8px;     /* 下方外邊距 */
+            color: #555;            /* 中灰色文字 */
+            font-weight: 500;       /* 字體粗細 */
+            font-size: 14px;        /* 字體大小 */
+        }
+        
+        /* 文字輸入框和密碼輸入框樣式 */
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;            /* 寬度 100% */
+            padding: 12px 15px;     /* 內邊距（上下 12px，左右 15px） */
+            border: 2px solid #e0e0e0; /* 淺灰色邊框 */
+            border-radius: 5px;     /* 圓角 */
+            font-size: 14px;        /* 字體大小 */
+            transition: border-color 0.3s; /* 邊框顏色變化的過渡效果 */
+        }
+        
+        /* 輸入框聚焦時的樣式 */
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;          /* 移除預設的聚焦外框 */
+            border-color: #667eea;  /* 改變邊框顏色為紫藍色 */
+        }
+        
+        /* 按鈕樣式 */
+        button {
+            width: 100%;            /* 寬度 100% */
+            padding: 12px;          /* 內邊距 */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* 漸層背景 */
+            color: white;           /* 白色文字 */
+            border: none;           /* 移除邊框 */
+            border-radius: 5px;     /* 圓角 */
+            font-size: 16px;        /* 字體大小 */
+            font-weight: 600;       /* 字體粗細 */
+            cursor: pointer;        /* 滑鼠游標變成手指 */
+            transition: transform 0.2s, box-shadow 0.2s; /* 變形和陰影的過渡效果 */
+        }
+        
+        /* 滑鼠移到按鈕上時的樣式 */
+        button:hover {
+            transform: translateY(-2px); /* 向上移動 2px */
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4); /* 增加陰影效果 */
+        }
+        
+        /* 按鈕被點擊時的樣式 */
+        button:active {
+            transform: translateY(0); /* 恢復原位 */
+        }
+        
+        /* 成功訊息樣式 */
+        .success-message {
+            display: none;          /* 預設隱藏 */
+            background: #4caf50;    /* 綠色背景 */
+            color: white;           /* 白色文字 */
+            padding: 15px;          /* 內邊距 */
+            border-radius: 5px;     /* 圓角 */
+            text-align: center;     /* 文字置中 */
+            margin-top: 20px;       /* 上方外邊距 */
+            animation: slideIn 0.3s ease-out; /* 套用滑入動畫 */
+        }
+        
+        /* 當成功訊息有 show 類別時顯示 */
+        .success-message.show {
+            display: block;         /* 顯示元素 */
+        }
+        
+        /* 定義滑入動畫 */
+        @keyframes slideIn {
+            from {
+                opacity: 0;         /* 從透明開始 */
+                transform: translateY(-10px); /* 從上方 10px 處開始 */
+            }
+            to {
+                opacity: 1;         /* 到完全不透明 */
+                transform: translateY(0); /* 到原始位置 */
+            }
+        }
+        
+        /* 資訊框樣式 */
+        .info-box {
+            background: #f5f5f5;    /* 淺灰色背景 */
+            padding: 15px;          /* 內邊距 */
+            border-radius: 5px;     /* 圓角 */
+            margin-top: 20px;       /* 上方外邊距 */
+            font-size: 12px;        /* 字體大小 */
+            color: #666;            /* 中灰色文字 */
+        }
+        
+        /* 資訊框內的標題樣式 */
+        .info-box h3 {
+            font-size: 14px;        /* 字體大小 */
+            margin-bottom: 8px;     /* 下方外邊距 */
+            color: #333;            /* 深灰色文字 */
+        }
+        
+        /* 資訊框內的段落樣式 */
+        .info-box p {
+            margin: 5px 0;          /* 上下外邊距 */
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>🔐 登入系統</h1>
+        
+        <form id="login-form">
+            <div class="form-group">
+                <label for="username">用戶名</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    placeholder="請輸入用戶名"
+                    required
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="password">密碼</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="請輸入密碼"
+                    required
+                >
+            </div>
+            
+            <button type="submit" id="login-button" role="button">登入</button>
+        </form>
+        
+        <div class="success-message" id="success-message">
+            ✓ 登入成功！歡迎回來，<span id="welcome-user"></span>
+        </div>
+        
+        <div class="info-box">
+            <h3>📝 測試資訊</h3>
+            <p><strong>用戶名：</strong>admin</p>
+            <p><strong>密碼：</strong>password</p>
+            <p style="margin-top: 10px; color: #999;">
+                此頁面用於 Playwright 元素定位練習
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // 監聽表單提交事件
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // 阻止表單預設的提交行為
+            
+            // 取得輸入的用戶名和密碼
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // 模擬登入驗證（檢查用戶名和密碼是否正確）
+            if (username === 'admin' && password === 'password') {
+                // 登入成功：顯示歡迎訊息
+                document.getElementById('welcome-user').textContent = username;
+                document.getElementById('success-message').classList.add('show');
+                
+                // 3 秒後隱藏成功訊息並重置表單
+                setTimeout(() => {
+                    document.getElementById('success-message').classList.remove('show');
+                    document.getElementById('login-form').reset(); // 清空表單
+                }, 3000);
+            } else {
+                // 登入失敗：顯示錯誤提示
+                alert('❌ 用戶名或密碼錯誤！\n\n請使用：\n用戶名：admin\n密碼：password');
+            }
+        });
+    </script>
+</body>
+</html>
