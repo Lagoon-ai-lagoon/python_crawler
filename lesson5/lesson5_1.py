@@ -7,25 +7,35 @@ def get_html_path()-> str:
     html_path = os.path.join(current_dir, "waiting_demo.html")
     return f"file://{html_path}"
 
-def deomo_1_dalayed_element(page):
-
+def demo_1_delayed_element(page):
+    """示範等待延遲加載的元素出現"""
     #page.click("#trigger-delayed")  # 點擊按鈕觸發異步操作
     delay_button = page.locator("#trigger-delayed")  #取後Locator按鈕觸
     delay_button.click()  #發送點擊事件
 
     # 等待載入指示器出現
-    page.wait_for_selector("#loading-1", state="visible")
-    print("載入指示器已出現")
+    #page.wait_for_selector("#loading-1", state="visible")
+    #print("載入指示器已出現")
 
     # 等待載入指示器消失
-    page.wait_for_selector("#loading-1", state="hidden")
-    print("載入指示器已消失")
+    #page.wait_for_selector("#loading-1", state="hidden")
+    #print("載入指示器已消失")
 
-    page.wait_for_selector("div#delayed-result.result.show", state="visible")
+    #page.wait_for_selector("div#delayed-result.result.show", state="visible")
 
     # 取得內容
     content = page.locator("#delayed-content").text_content()
     print(f"延遲加載的內容: {content}")
+
+def demo_2_dynamic_content(page):
+    """示範等待動態加載的內容出現"""
+    page.click("#load-data")  # 點擊按鈕觸發異步操作
+
+    #page.wait_for_selector("#dynamic-content", state="visible")
+    page.wait_for_function("document.querySelectorAll('#dynamic-content > .item').length >= 3")
+    items = page.locator("#dynamic-content > .item").all()
+    for item in items:
+        print(f"動態加載的項目: {item.text_content()}")
 
 
 
@@ -39,10 +49,11 @@ def main():
         page = browser.new_page()
 
         page.goto(path)
+
         
         page.wait_for_load_state("networkidle")  # 等待網絡空閒
-        deomo_1_dalayed_element(page)
-        page.wait_for_timeout(3000)  # 等待3秒以觀察效果
+        demo_1_delayed_element(page)
+        demo_2_dynamic_content(page)
         browser.close()
 
 if __name__ == "__main__":
