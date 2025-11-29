@@ -12,14 +12,14 @@
             "program": "${file}",
             "console": "integratedTerminal"
         },
-                {
+        {
             "name": "lesson5_1",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/lesson5/lesson5_1.py",
             "console": "integratedTerminal"
         },
-                {
+        {
             "name": "lesson5_2",
             "type": "debugpy",
             "request": "launch",
