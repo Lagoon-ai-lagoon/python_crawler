@@ -6,7 +6,7 @@
     "configurations": [
 
         {
-            "name": "lesson5_1 debugger",
+            "name": "現有檔案",
             "type": "debugpy",
             "request": "launch",
             "program": "${file}",
