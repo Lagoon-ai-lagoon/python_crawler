@@ -27,5 +27,6 @@ def run():
         # 關閉瀏覽器
         browser.close()
 
+
 if __name__ == "__main__":
     run()
