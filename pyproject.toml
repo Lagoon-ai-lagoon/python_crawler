@@ -13,3 +13,8 @@ dependencies = [
     "streamlit>=1.28.0",
     "twstock>=1.4.0",
 ]
+
+[tool.uv.workspace]
+members = [
+    "lesson8_1",
+]
